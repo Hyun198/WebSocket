@@ -20,6 +20,7 @@
     <script>
       const socket = io.connect("http://localhost:8005", {
         path: "/socket.io",
+        transports: ["websocket"], //처음부터 웹 소켓만 사용할 때
       });
       socket.on("news", function (data) {
         console.log(data);
