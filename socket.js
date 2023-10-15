@@ -1,6 +1,7 @@
-const WebSocket = require('ws');
+//const WebSocket = require('ws');
+const SocketIO = require('socket.io');
 
-module.exports = (server) => {
+/* module.exports = (server) => {
   const wss = new WebSocket.Server({ server });
 
   wss.on('connection', (ws, req) => { // 웹소켓 연결 시
@@ -22,5 +23,30 @@ module.exports = (server) => {
         ws.send('서버에서 클라이언트로 메시지를 보냅니다.');
       }
     }, 3000);
+  });
+}; */
+
+module.exports = (server) => {
+  const io = SocketIO(server, { path: '/socket.io' });
+
+  io.on('connection', (socket) => { //웹 소켓 연결 시
+    const req = socket.request;
+    const ip = req.headers['x-forward-for'] || req.socket.remoteAddress;
+    console.log('새로운 클라이언트 접속!', ip, socket.id, req.ip);
+    socket.on('disconnect', () => { //연결 종료 시
+      console.log('클라이언트 접속 해제', ip, socket.id);
+      clearInterval(socket.interval);
+    });
+    socket.on('error', (error) => {
+      console.error(error);
+    });
+    socket.on('reply', (data) => {
+      console.log(data);
+    });
+    socket.interval = setInterval(() => {
+      socket.emit('news', 'hello socket.IO');
+    }, 3000);
+
+
   });
 };
