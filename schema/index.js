@@ -1,14 +1,14 @@
 const mongoose = require('mongoose');
 
-const { MONGO_ID, MONGO_PASSWORD, NODE_ENV } = process.env;
-const MONGO_URL = 'mongodb+srv://hwn123h:kLYw1i7x8UGU7Bzn@cluster0.hz8dht9.mongodb.net/?retryWrites=true&w=majority';
+const { NODE_ENV } = process.env;
 const connect = () => {
   if (NODE_ENV !== 'production') {
     mongoose.set('debug', true);
   }
-  mongoose.connect(MONGO_URL, {
+  mongoose.connect(process.env.DATABASE_URI, {
     dbName: 'gitchat',
     useNewUrlParser: true,
+    useUnifiedTopology: true
   }).then(() => {
     console.log("몽고디비 연결 성공");
   }).catch((err) => {
