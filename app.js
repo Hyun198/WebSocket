@@ -37,6 +37,16 @@ app.use(session({
     },
 }));
 
+app.use((req, res, next) => {
+    if (!req.session.color) { //세션에 color속성이 없다면, 세션아이디를 바탕으로 color속성을 생성
+        const colorHash = new ColorHash();
+        req.session.color = colorHash.hex(req.sessionID);
+        console.log(req.session.color, req.sessionID);
+    }
+    next();
+});
+
+
 app.use('/', indexRouter);
 
 app.use((req, res, next) => {
@@ -57,4 +67,4 @@ const server = app.listen(app.get('port'), () => {
     console.log(app.get('port'), '번 포트에서 대기 중');
 });
 
-webSocket(server);
+webSocket(server, app);
