@@ -89,8 +89,7 @@
     btn.addEventListener("click", addBtnEvent);
   });
 </script>
-
-{% block script %}
+{% endblock %} {% block script %}
 <script>
   window.onload = () => {
     if (new URL(location.href).searchParams.get("error")) {

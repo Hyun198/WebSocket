@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const dotenv = require('dotenv');
 const connect = require('./schema');
+const ColorHash = require('color-hash').default;
 
 
 

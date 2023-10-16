@@ -1,5 +1,5 @@
 const express = require('express');
-const {renderMain, renderRoom, createRoom, enterRoom, removeRoom} = require('../con')
+const { renderMain, renderRoom, createRoom, enterRoom, removeRoom } = require('../controllers');
 const router = express.Router();
 
 router.get('/', renderMain);
