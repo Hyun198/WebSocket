@@ -80,16 +80,16 @@ exports.removeRoom = async (req, res, next) => {
 
 
 exports.sendChat = async (req, res, next) => {
-    try {
-        const chat = await Chat.create({
-            room: req.params.id,
-            user: req.session.color,
-            chat: req.body.chat,
-        });
-        req.app.get('io').of('./chat').to(req.params.id).emit('chat', chat);
-        res.send('ok');
-    } catch (error) {
-        console.error(error);
-        next(error);
-    }
-};
+  try {
+    const chat = await Chat.create({
+      room: req.params.id,
+      user: req.session.color,
+      chat: req.body.chat,
+    });
+    req.app.get('io').of('/chat').to(req.params.id).emit('chat', chat);
+    res.send('ok');
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+}

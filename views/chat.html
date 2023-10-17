@@ -7,7 +7,7 @@
     {% for chat in chats %} {% if chat.user === user %}
     <div class="mine" style="color: {{chat.user}}">
       <div>{{chat.user}}</div>
-      {% if chat.gif %}
+      {% if chat.gif %}}
       <img src="/gif/{{chat.gif}}" />
       {% else %}
       <div>{{chat.chat}}</div>
@@ -35,7 +35,6 @@
   <input type="text" id="chat" name="chat" />
   <button type="submit">전송</button>
 </form>
-
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script>
@@ -59,7 +58,6 @@
     div.appendChild(chat);
     document.querySelector("#chat-list").appendChild(div);
   });
-
   socket.on("chat", function (data) {
     const div = document.createElement("div");
     if (data.user === "{{user}}") {
