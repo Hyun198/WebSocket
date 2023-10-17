@@ -53,10 +53,11 @@ exports.enterRoom = async (req, res, next) => {
         if (room.max <= rooms.get(req.params.id)?.size) {
             return res.redirect('/?error=허용 인원 초과');
         }
+        const chats = await Chat.find({ room: room._id }).sort('cratedAt');
         return res.render('chat', {
             room,
             title: room.title,
-            chats: [],
+            chats,
             user: req.session.color,
         });
     } catch (error) {
@@ -71,6 +72,22 @@ exports.removeRoom = async (req, res, next) => {
         await Chat.deleteMany({ room: req.params.id }); */
         await removeRoomService(req.params.id);
         res.send('OK');
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+};
+
+
+exports.sendChat = async (req, res, next) => {
+    try {
+        const chat = await Chat.create({
+            room: req.params.id,
+            user: req.session.color,
+            chat: req.body.chat,
+        });
+        req.app.get('io').of('./chat').to(req.params.id).emit('chat', chat);
+        res.send('ok');
     } catch (error) {
         console.error(error);
         next(error);
